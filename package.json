@@ -6,8 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "biome check",
-    "format": "biome format --write"
+    "clear": "rm -rf .next out tsconfig.tsbuildinfo next-env.d.ts node_modules",
+    "biome:check": "biome check .",
+    "biome:fix": "biome check --write .",
+    "lint": "biome check ."
   },
   "dependencies": {
     "next": "16.4.3",
@@ -15,7 +17,7 @@
     "react-dom": "19.3.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.4.2",
+    "@biomejs/biome": "2.6.3",
     "@tailwindcss/turbopack": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

@@ -1,0 +1,138 @@
+// Based on https://github.com/vercel/next.js/blob/canary/packages/create-next-app/templates/app-tw/ts/biome.json
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "ignoreUnknown": true,
+    "includes": [
+      "**",
+      "!node_modules",
+      "!.next",
+      "!dist",
+      "!.agents",
+      "!.claude",
+      "!.cursor",
+      "!build",
+      "!out",
+      "!public"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 120
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "preset": "recommended",
+      "suspicious": {
+        "noDuplicateProperties": "off",
+        "noDuplicateCustomProperties": "off",
+        // Too strict for skeleton components
+        "noArrayIndexKey": "off",
+        // https://github.com/biomejs/biome/issues/7223
+        "noUnknownAtRules": "off"
+      },
+      "complexity": {
+        "noImportantStyles": "off"
+      },
+      "nursery": {
+        // https://biomejs.dev/linter/rules/use-tailwind-sorted-classes/
+        // Default `tailwind.mergeFunctions`/`variantFunctions` already cover cn, clsx, tw, cva
+        "useTailwindSortedClasses": {
+          "fix": "safe",
+          "level": "warn"
+        }
+      }
+    },
+    "domains": {
+      "next": "recommended",
+      "react": "recommended"
+    }
+  },
+  "overrides": [
+    {
+      // Test harnesses close over per-test state and are mounted once, never inside another component's render
+      "includes": ["**/*.test.tsx", "**/tests/**", "**/__tests__/**"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noComponentHookFactories": "off"
+          }
+        }
+      }
+    }
+  ],
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": {
+          "level": "on",
+          "options": {
+            "groups": [
+              [":BUN:", ":NODE:", ":PACKAGE:"],
+              ":BLANK_LINE:",
+              { "type": true },
+              ":BLANK_LINE:",
+              "@/types/**",
+              ":BLANK_LINE:",
+              "@/const/**",
+              "@/data/**",
+              ":BLANK_LINE:",
+              "@/lib/**",
+              ":BLANK_LINE:",
+              "@/utils/**",
+              ":BLANK_LINE:",
+              "@/hooks/**",
+              ":BLANK_LINE:",
+              "@/handlers/**",
+              ":BLANK_LINE:",
+              "@/components/**",
+              ":BLANK_LINE:",
+              ["@/app/**", "@/pages/**"],
+              "@/**"
+            ]
+          }
+        }
+      }
+    }
+  },
+  // Without it the Tailwind rules treat theme tokens (`bg-fg/5`) as unknown classes and sort them first
+  "tailwind": {
+    "stylesheet": "./src/app/globals.css"
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "jsxQuoteStyle": "single",
+      "semicolons": "asNeeded",
+      "trailingCommas": "es5",
+      "arrowParentheses": "asNeeded"
+    }
+  },
+  // Off: the Markdown formatter mangles frontmatter; the YAML one rewrites lockfile and mixed quotes
+  "markdown": {
+    "formatter": {
+      "enabled": false
+    }
+  },
+  "yaml": {
+    "formatter": {
+      "enabled": false
+    }
+  },
+  "css": {
+    "formatter": {
+      "quoteStyle": "single"
+    },
+    "parser": {
+      "tailwindDirectives": true
+    }
+  }
+}
